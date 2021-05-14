@@ -2,8 +2,9 @@ package com.gd.sakila.vo;
 
 import lombok.Data;
 
-@Data
-public class PageParam {
+@Data //@Setter, @Getter 해도댐
+public class Page {
 	private int rowPerPage;
 	private int beginRow;
+	private String searchWord;
 }

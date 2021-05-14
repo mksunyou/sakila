@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.sakila.mapper.CountryMapper;
 import com.gd.sakila.vo.Country;
-import com.gd.sakila.vo.PageParam;
+import com.gd.sakila.vo.Page;
 
 @Service
 @Transactional
@@ -23,7 +23,7 @@ public class CountryService {
 		
 		//mybatis는 매개변수 하나만.
 		// 1. 컨트롤러에서 보내어준 매개값을 dao한테 바로 보내줄수 없어서 가공...
-		PageParam pageParam = new PageParam();
+		Page pageParam = new Page();
 		pageParam.setBeginRow(beginRow);
 		pageParam.setRowPerPage(rowPerPage);
 		
