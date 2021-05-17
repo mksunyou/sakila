@@ -20,24 +20,41 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
+	@GetMapping("/modifyBoard")
+	public String modifyBoard(Model model, @RequestParam(value ="boardId", required = true) int boardId) {
+		log.debug("▶▶▶▶▶▶modifyBoard param: "+boardId);
+		//select
+		Map<String, Object> map = boardService.getBoardOne(boardId);
+		model.addAttribute("map",map);
+		return "modifyBoard";
+	}
+	@PostMapping("/modifyBoard")
+	public String modifyBoard(Board board) {
+		log.debug("▶▶▶▶▶▶modifyBoard param: "+board.toString());
+		//update
+		int row = boardService.modifyBoard(board);
+		log.debug("update row: "+row);
+		return "redirect:/getBoardOne?boardId="+board.getBoardId();
+	}
+	
 	// 리터타입은 뷰 이름 문자열 따라서 public 뒤에 String
 	// 리턴타입 뷰이름 문자열 C -> V
-		@GetMapping("/removeBoard")
-		public String removeBoard(Model model, @RequestParam(value ="boardId", required = true) int boardId) {
-			log.debug("▶▶▶▶▶▶ param: "+boardId);
-			model.addAttribute("boardId",boardId);
-			return "removeBoard";
+	@GetMapping("/removeBoard")
+	public String removeBoard(Model model, @RequestParam(value ="boardId", required = true) int boardId) {
+		log.debug("▶▶▶▶▶▶ param: "+boardId);
+		model.addAttribute("boardId",boardId);
+		return "removeBoard";
+	}
+	// C -> M -> redirect(C)
+	@PostMapping("/removeBoard")
+	public String removeBoard(Board board) {
+		int row = boardService.removeBoard(board);
+		log.debug("removeBoard(): "+row);
+		if(row == 0) {
+			return "redirect:/getBoardOne?boardId="+board.getBoardId();
 		}
-		// C -> M -> redirect(C)
-		@PostMapping("/removeBoard")
-		public String removeBoard(Board board) {
-			int row = boardService.removeBoard(board);
-			log.debug("removeBoard(): "+row);
-			if(row == 0) {
-				return "redirect:/getBoardOne?boardId="+board.getBoardId();
-			}
-			return "redirect:/getBoardList";
-		}
+		return "redirect:/getBoardList";
+	}
 	
 	
 	@GetMapping("/addBoard")
@@ -52,11 +69,13 @@ public class BoardController {
 		return "redirect:/getBoardList";
 	}
 	
-	@GetMapping("getBoardOne")
+	@GetMapping("/getBoardOne")
 	public String getBoardOne(Model model,
 								@RequestParam(value="boardId", required = true) int boardId) {
 		Map<String, Object> map = boardService.getBoardOne(boardId);
-		model.addAttribute("map",map);
+		log.debug("map: "+map); //log.debug(map) 맵풀어서 출력
+		model.addAttribute("boardMap", map.get("boardMap"));
+		model.addAttribute("commentList", map.get("commentList"));
 		return "getBoardOne";
 	}
 	

@@ -40,6 +40,9 @@
 		WHERE board_id = #{boardId}
 	</select>
 	
+	<!-- update form 사용 select -->
+	
+	
 	<insert id="insertBoard" parameterType="com.gd.sakila.vo.Board">
 		INSERT INTO board(
 			board_pw,

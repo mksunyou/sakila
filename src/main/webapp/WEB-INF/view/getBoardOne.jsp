@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,29 +21,51 @@
          <tbody>
              <tr>
                 <td>board_id :</td>
-                <td>${map.boardId}</td>
+                <td>${boardMap.boardId}</td>
                </tr>
             <tr>
                    <td>board_title :</td>
-                   <td>${map.boardTitle}</td>
+                   <td>${boardMap.boardTitle}</td>
             </tr>
             <tr>
                    <td>board_content :</td>
-                   <td>${map.boardContent}</td>
+                   <td>${boardMap.boardContent}</td>
             </tr>
             <tr>
                    <td>username :</td>
-                   <td>${map.username}</td>
+                   <td>${boardMap.username}</td>
             </tr>
             <tr>
                    <td>insert_date :</td>
-                   <td>${map.insertDate}</td>
+                   <td>${boardMap.insertDate}</td>
             </tr>
         </tbody>
     </table>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/modifyBoard?boardId=${map.boardId}">수정</a>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/removeBoard?boardId=${map.boardId}">삭제</a>
     <a class="btn btn-default" href="${pageContext.request.contextPath}/getBoardList">글목록</a>
+    <!-- 댓글 목록 -->
+    <div>
+    	<div>
+    		<a href="">
+    			<button type="button">추가</button>
+    		</a>
+    	</div>
+    	<table class="table">
+	    	<c:forEach var = "c" items="${commentList}">
+	    		<tr>
+	    			<td>${c.commentContent}</td>
+	    			<td>${c.username}</td>
+	    			<td>${c.insertDate}</td>
+	    			<td>
+	    				<a href="">
+	    					<button type="button">삭제</button>
+	    				</a>
+	    			</td>
+	    		</tr>
+	    	</c:forEach>
+    	</table>
+    </div>
 </div>
 </body>
 </html>
