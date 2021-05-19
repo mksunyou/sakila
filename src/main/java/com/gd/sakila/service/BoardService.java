@@ -29,11 +29,23 @@ public class BoardService {
 		return boardMapper.updateBoard(board);
 	}
 	
-	// board 삭제 액션
-	public int removeBoard(Board board) {
-		log.debug(board.toString()); //boardId, Pw 확인 디버그.
-		return boardMapper.deleteBoard(board);
-	}
+	// 삭제 액션
+		public int removeBoard(Board board) {
+			log.debug("▶▶▶▶▶▶ removeBoard() param: "+ board.toString());
+			
+			// 2) 게시글삭제 FK를 지정하지 않은 경우
+			int boardRow = boardMapper.deleteBoard(board);
+			if(boardRow == 0) {
+				return 0;
+			}
+			
+			// 1) 댓글삭제
+			int commentRow = commentMapper.deleteCommentByBoardId(board.getBoardId());
+			log.debug("▶▶▶▶▶▶ removeBoard() commentRow :"+commentRow);
+			
+			log.debug("▶▶▶▶▶▶ removeBoard() boardRow :"+boardRow);
+			return boardRow;
+		}
 	
 	// board 추가 액션
 	public int addBoard(Board board) {

@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1>Home</h1>
-	<a href="${pageContext.request.contentType}/getBoardList">게시판</a>
+	<a href="${pageContext.request.contentType}/admin/getBoardList">게시판</a>
 </body>
 </html> 
