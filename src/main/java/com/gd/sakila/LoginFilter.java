@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,12 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// 요청전
 		log.debug("▶▶▶▶▶ LoginFilter 요청 전");
+		/*
 		HttpSession session = null;
 		if(request instanceof HttpServletRequest) {
 			session = ((HttpServletRequest)request).getSession();
 		}
-		/* 로그인 기능 구현전 주석처리
+		
 		if(session.getAttribute("loginStaff") == null) {
 			if(response instanceof HttpServletResponse) {
 				((HttpServletResponse)response).sendRedirect("/");

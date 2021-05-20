@@ -30,7 +30,21 @@
 <script>
     $(document).ready(function() {
         $('#addButton').click(function() {
-            if ($('#boardPw').val().length < 4) {
+        	
+        	// 파일들 중 하나라도 첨부되지 않으면 ck = true;
+        	let ck = false;
+        	let boardfile = $('.boardfile'); //배열
+        	// break키워드 사용을 위해 for반복문 사용 <-- boardfile.each() 메서드 사용 X
+        	for(let item of boardfile) { // 중간에 빠져나와야 하기 때문에 for문으로 씀.
+        		if($(item).val()=='') {
+        			ck = true;
+        			console.log('첨부되지 않은 파일이 있습니다.');
+        			break;
+        		}
+        	}
+        	if(ck) { // if(ck==true)
+        		alert('첨부되지 않은 파일이 있습니다.');
+        	} else if ($('#boardPw').val().length < 4) {
                 alert('boardPw는 4자이상 이어야 합니다');
                 $('#boardPw').focus();
             } else if ($('#boardTitle').val() == '') {
@@ -46,6 +60,18 @@
                 $('#addForm').submit();
             }
         });
+        
+        // #inputFile에 input type="file" 추가
+        $('#addFileBtn').click(function(){
+        	console.log('#addFileBtn click!');
+        	$('#inputFile').append('<input type="file" name="boardfile" class="boardfile">')
+        });
+        
+     // #inputFile에 input type="file" 마지막 태그를 삭제
+ 		$('#delFileBtn').click(function(){
+        	console.log('#delFileBtn click!');
+        	$('#inputFile').children().last().remove();
+        });
     });
 </script>
 <title>addBoard</title>
@@ -54,29 +80,38 @@
     <div class="container">
         <h1>addBoard</h1>
         <form id="addForm"
-            action="${pageContext.request.contextPath}/admin/addBoard" method="post">
+            action="${pageContext.request.contextPath}/admin/addBoard" method="post" enctype="multipart/form-data">
+           	<div>
+           		<div>
+           			<button id="addFileBtn" type="button">파일추가</button>
+           			<button id="delFileBtn" type="button">파일삭제</button>
+           		</div>
+           		
+           		<div id="inputFile">
+           		</div>
+           	</div>
+           
             <div class="form-group">
                 <label for="boardPw">boardPw :</label> <input class="form-control"
-                    name="boardPw" id="boardPw" type="password" />
+                    name="board.boardPw" id="boardPw" type="password" />
             </div>
             <div class="form-group">
                 <label for="boardPw">boardTitle :</label> <input
-                    class="form-control" name="boardTitle" id="boardTitle" type="text" />
+                    class="form-control" name="board.boardTitle" id="boardTitle" type="text" />
             </div>
             <div class="form-group">
                 <label for="boardContent">boardContent :</label>
-                <textarea class="form-control" name="boardContent" id="boardContent"
+                <textarea class="form-control" name="board.boardContent" id="boardContent"
                     rows="5" cols="50"></textarea>
             </div>
             <div class="form-group">
                 <label for="staffId">staffId :</label> <input
-                    class="form-control" name="staffId" id="staffId" type="text" />
+                    class="form-control" name="board.staffId" id="staffId" type="text" />
             </div>
             <div>
-                <input class="btn btn-default" id="addButton" type="button"
-                    value="글입력" /> <input class="btn btn-default" type="reset"
-                    value="초기화" /> <a class="btn btn-default"
-                    href="${pageContext.request.contextPath}/admin/getBoardList">글목록</a>
+                <input class="btn btn-default" id="addButton" type="button" value="글입력" /> 
+                <input class="btn btn-default" type="reset" value="초기화" /> 
+                <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getBoardList">글목록</a>
             </div>
         </form>
     </div>

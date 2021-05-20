@@ -67,7 +67,7 @@
        </div>
    <!-- 댓글 목록 -->
    <div>
-      <form action="${pageContext.request.contextPath}/admin/addcomment" id= "commentForm" method = "post">
+      <form action="${pageContext.request.contextPath}/addComment" id= "commentForm" method = "post">
          <input type = "hidden" name = "boardId" value="${boardMap.boardId}">
          <div>
             username : <input type = "text" id = "username" name = "username">
@@ -87,7 +87,7 @@
                <td>${c.commentContent}</td>
                <td>${c.username}</td>
                <td>${c.insertDate}</td>
-               <td><a href="${pageContext.request.contextPath}/admin/removeComment?commentId=${c.commentId}&boardId=${c.boardId}"><button type="button">삭제</button></a></td>
+               <td><a href="${pageContext.request.contextPath}/removeComment?commentId=${c.commentId}&boardId=${c.boardId}"><button type="button">삭제</button></a></td>
             </tr>
          </c:forEach>
       </table>
