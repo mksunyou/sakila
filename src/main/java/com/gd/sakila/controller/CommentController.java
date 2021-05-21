@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.CommentService;
@@ -12,6 +13,7 @@ import com.gd.sakila.vo.Comment;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j//log 각체 생성
 @Controller //spring이 스캔 -> 객체생성
+@RequestMapping("/admin")
 public class CommentController {
 	@Autowired // 의존 객체 주입(DI)
 	CommentService commentService;
@@ -24,10 +26,10 @@ public class CommentController {
 		log.debug("▶▶▶▶▶▶ removeComment boardId param: "+boardId);
 		
 		//댓글 삭제 서비스 호출
-		int row = commentService.removeCommet(commentId);
+		int row = commentService.removeComment(commentId);
 		log.debug("▶▶▶▶▶▶ removeComment row: "+row);
 		
-		return "redirect:/getBoardOne?boardId="+boardId;
+		return "redirect:/admin/getBoardOne?boardId="+boardId;
 	}
 	
 	@PostMapping("/addComment")
@@ -37,6 +39,6 @@ public class CommentController {
 		int row = commentService.addComment(comment);
 		log.debug("▶▶▶▶▶▶ addComment() row: "+row);
 		
-		return "redirect:/getBoardOne?boardId="+comment.getBoardId();
+		return "redirect:/admin/getBoardOne?boardId="+comment.getBoardId();
 	}
 }

@@ -1,5 +1,7 @@
 package com.gd.sakila.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.sakila.vo.Staff;
@@ -10,4 +12,5 @@ import com.gd.sakila.vo.Staff;
 @Mapper //mapper.xml을 찾아서 메서드명과 mapper의 id명이 같으면 둘을 합쳐서 메서드를 구현클래스 생성시 오버라이딩
 public interface StaffMapper {
 	Staff selectStaffByLogin(Staff staff);
+	List<Staff> selectStaffList(Staff staff);
 }

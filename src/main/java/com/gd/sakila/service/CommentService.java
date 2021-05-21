@@ -16,7 +16,7 @@ public class CommentService {
 	@Autowired
 	CommentMapper commentMapper;
 	//관리자 게시판 댓글 삭제
-	public int removeCommet(int commentId) {
+	public int removeComment(int commentId) {
 		log.debug("▶▶▶▶▶▶ removeCommetByCommentId() param: "+ commentId);
 		
 		int row = commentMapper.deleteCommentByCommentId(commentId);

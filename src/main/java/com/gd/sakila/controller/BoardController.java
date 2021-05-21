@@ -37,7 +37,7 @@ public class BoardController {
 		//update
 		int row = boardService.modifyBoard(board);
 		log.debug("update row: "+row);
-		return "redirect:/getBoardOne?boardId="+board.getBoardId();
+		return "redirect:/admin/getBoardOne?boardId="+board.getBoardId();
 	}
 	
 	// 리터타입은 뷰 이름 문자열 따라서 public 뒤에 String
@@ -54,9 +54,9 @@ public class BoardController {
 		int row = boardService.removeBoard(board);
 		log.debug("removeBoard(): "+row);
 		if(row == 0) {
-			return "redirect:/getBoardOne?boardId="+board.getBoardId();
+			return "redirect:/admin/getBoardOne?boardId="+board.getBoardId();
 		}
-		return "redirect:/getBoardList";
+		return "redirect:/admin/getBoardList";
 	}
 	
 	
@@ -79,6 +79,7 @@ public class BoardController {
 		Map<String, Object> map = boardService.getBoardOne(boardId);
 		log.debug("map: "+map); //log.debug(map) 맵풀어서 출력
 		model.addAttribute("boardMap", map.get("boardMap"));
+		model.addAttribute("boardfileList", map.get("boardfileList"));
 		model.addAttribute("commentList", map.get("commentList"));
 		return "getBoardOne";
 	}

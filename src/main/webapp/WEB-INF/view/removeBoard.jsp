@@ -8,9 +8,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
+	console.log('btn ready!');
 	$('#btn').click(function(){
-		// 폼 유효성 검사 코드 추가
-		$('#removeForm').submit();
+		console.log('btn click!'); // 웹브라우저 콘솔에서 확인 가능
+		if($('#boardPw').val() == '') {
+			alert('boardPw 입력!');
+		} else {
+			$('#removeForm').submit();
+		}
+		
 	});
 });
 </script>

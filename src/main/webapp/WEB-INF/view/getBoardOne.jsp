@@ -58,6 +58,23 @@
                    <td>insert_date :</td>
                    <td>${boardMap.insertDate}</td>
             </tr>
+           	<tr>
+				<td>boardfile :</td>
+				<td>
+					<div>
+						<a href="${pageContext.request.contextPath}/admin/addBoardfile?boardId=${boardMap.boardId}"><button type="button">파일 추가</button></a>
+					</div>
+					<!-- 보드파일을 출력하는 반복문 코드 구현 -->
+					<c:forEach var="f" items="${boardfileList}">
+						<div>
+							<a href="${pageContext.request.contextPath}/resource/${f.boardfileName}">${f.boardfileName}</a>
+							<a href="${pageContext.request.contextPath}/admin/removeBoardfile?boardfileId=${f.boardfileId}&boardId=${f.boardId}&boardfileName=${boardfileName}">
+								<button type="button">파일삭제</button>
+							</a>
+						</div>
+					</c:forEach>
+				</td>
+			</tr>
         </tbody>
     </table>
        <div>
@@ -67,7 +84,7 @@
        </div>
    <!-- 댓글 목록 -->
    <div>
-      <form action="${pageContext.request.contextPath}/addComment" id= "commentForm" method = "post">
+      <form action="${pageContext.request.contextPath}/admin/addComment" id= "commentForm" method = "post">
          <input type = "hidden" name = "boardId" value="${boardMap.boardId}">
          <div>
             username : <input type = "text" id = "username" name = "username">
@@ -87,7 +104,7 @@
                <td>${c.commentContent}</td>
                <td>${c.username}</td>
                <td>${c.insertDate}</td>
-               <td><a href="${pageContext.request.contextPath}/removeComment?commentId=${c.commentId}&boardId=${c.boardId}"><button type="button">삭제</button></a></td>
+               <td><a href="${pageContext.request.contextPath}/admin/removeComment?commentId=${c.commentId}&boardId=${boardMap.boardId}"><button type="button">삭제</button></a></td>
             </tr>
          </c:forEach>
       </table>
