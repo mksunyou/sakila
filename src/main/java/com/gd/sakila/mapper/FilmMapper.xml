@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.FilmMapper">
+	<!-- Map : filmId(in), storeId(in), filmCount(out) / in은 입력, out은 출력 
+		vo 생성이 아닌 Map으로 처리-->
+	<select id="selectFilmInStock" parameterType="java.util.Map" resultType="int" statementType="CALLABLE">
+	<!-- 프로시저 사용할때는 statementType="CALLABLE"를 추가해야한다.  -->
+	{
+		call film_in_stock(
+			#{filmId},
+			#{storeId},
+			#{filmCount, mode=OUT, jdbcType=DECIMAL, javaType=Integer}
+		)
+	}	
+	</select>
+	
+	<select id="selectFilmOne" parameterType="Integer" resultType="java.util.Map">
+		SELECT 
+			f.film_id filmId, f.title title, f.description description, f.release_year releaseYear, l.name, 
+			f.rental_duration rentalDuration, f.rental_rate rentalRate, 
+			f.LENGTH, f.replacement_cost replacementCost, f.rating rating, f.special_features specialFeatures, f.last_update lastUpdate, fl.actors actors, c.name name
+		FROM film f left JOIN film_list fl ON f.film_id = fl.FID
+			LEFT JOIN film_category fc ON fc.film_id = f.film_id
+			JOIN category c ON fc.category_id=c.category_id
+			JOIN language l ON f.language_id = l.language_id
+		GROUP BY f.film_id
+	
+	</select>
+	
+	<select id="selectFilmList" resultType="com.gd.sakila.vo.Film" parameterType="com.gd.sakila.vo.Page">
+		SELECT film_id filmId, title, rental_duration rentalDuration, rental_rate rentalRate, length, replacement_cost replacementCost
+		FROM film 
+	<where>
+		<if test="searchWord != null">
+			title LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+	</where>
+		ORDER BY filmId ASC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectTotal" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM film
+		<where>
+			<if test="searchWord != null">
+				title LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+	</select>
+
+</mapper>

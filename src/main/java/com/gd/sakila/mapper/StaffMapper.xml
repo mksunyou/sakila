@@ -12,14 +12,5 @@
 		WHERE email = #{email} <!-- getEmail() -->
 		AND password = PASSWORD(#{password}) <!-- getPassword() -->
 	</select>
-	
-	<!-- staff 리스트 -->
-	<select id="selectStaffList" resultType="java.util.Map" parameterType="Integer">
-		SELECT 	s.staff_id staffId,s.first_name firstName, s.last_name lastName, a.address address , a.postal_code postalCode, a.phone phone,
-				city.city city, country.country country, s.store_id storeId
-		FROM staff s JOIN address a ON s.address_id = a.address_id JOIN city ON a.city_id = city.city_id
-		JOIN country ON city.country_id = country.country_id	
-	</select>
-	
-	
+
 </mapper>
