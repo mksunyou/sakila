@@ -20,7 +20,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>staffId</th>
+                <th>Id</th>
                 <th>name</th>
                 <th>address</th>
                 <th>zip code</th>
@@ -34,14 +34,14 @@
         <tbody>
             <c:forEach var="s" items="${staffList}">
                 <tr>
-                	<td>${s.staffId }</td>
-                	<td>${s.firstName} ${s.lastName}</td>
+                	<td>${s.ID }</td>
+                	<td>${s.name}</td>
                 	<td>${s.address}</td>
-                	<td>${s.postalCode}</td>
+                	<td>${s.zipCode}</td>
                 	<td>${s.phone}</td>
                 	<td>${s.city}</td>
                 	<td>${s.country}</td>
-                	<td>${s.storeId}</td>
+                	<td>${s.SID}</td>
                     
                 </tr>
             </c:forEach>

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
-@WebFilter("/admin/*")
+@WebFilter("/admin/*") // servlet @도 작성 가능하도록.
 public class LoginFilter implements Filter {
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
