@@ -12,54 +12,141 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
- 
+ <!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			 console.log("btn click!");
+			 $('#filmForm').submit();
+		});
+	});
+</script>
 </head>
 <body>
 <div class="container">
     <h1>getFilmList</h1>
+    <div>
+    	<form id="filmForm" action="${pageContext.request.contextPath}/admin/getFilmList" method="get">
+    		<label for="category"> Category :</label> 
+			<select name="categoryName">
+			<option value="">카테고리선택</option>
+    			<c:forEach var="name" items="${categoryNameList}">
+    				<c:if test="${name == categoryName}"> 
+    					<option value="${name}" selected="selected">${name}</option>
+    				</c:if>
+    				<c:if test="${name != categoryName}"> 
+    					<option value="${name}">${name}</option>
+    				</c:if>
+    			</c:forEach>
+    		</select>
+    		
+    		 <label for="price"> Price :</label> 
+    		 <select name="price">
+    			<option value="0">가격 선택</option>
+    			<c:if test="${price ==0.99}">
+    				<option value="0.99" selected="selected">0.99</option>
+    			</c:if>
+    			<c:if test="${price !=0.99}">
+    				<option value="0.99">0.99</option>
+    			</c:if>
+    			<c:if test="${price ==2.99}">
+    				<option value="2.99" selected="selected">2.99</option>
+    			</c:if>
+    			<c:if test="${price !=2.99}">
+    				<option value="2.99">2.99</option>
+    			</c:if>
+    			<c:if test="${price ==4.99}">
+    				<option value="4.99" selected="selected">4.99</option>
+    			</c:if>
+    			<c:if test="${price !=4.99}">
+    				<option value="4.99">4.99</option>
+    			</c:if>    			
+    		</select>
+    		
+    		<label for="rating"> Rating :</label> 
+			<select name="rating">
+			<option value="">등급 선택</option>
+    			<c:if test="${rating == 'G'}">
+    				<option value="G" selected="selected">G</option>
+    			</c:if>
+    			<c:if test="${rating != 'G'}">
+    				<option value="G">G</option>
+    			</c:if>
+    			<c:if test="${rating == 'PG'}">
+    				<option value="PG" selected="selected">PG</option>
+    			</c:if>
+    			<c:if test="${rating != 'PG'}">
+    				<option value="PG">PG</option>
+    			</c:if>
+    			<c:if test="${rating == 'PG-13'}">
+    				<option value="PG-13" selected="selected">PG-13</option>
+    			</c:if>
+    			<c:if test="${rating != 'PG-13'}">
+    				<option value="PG-13">PG-13</option>
+    			</c:if>
+    			<c:if test="${rating == 'R'}">
+    				<option value="R" selected="selected">R</option>
+    			</c:if>
+    			<c:if test="${rating != 'R'}">
+    				<option value="R">R</option>
+    			</c:if>
+    			<c:if test="${rating == 'NC-17'}">
+    				<option value="NC-17" selected="selected">NC-17</option>
+    			</c:if>
+    			<c:if test="${rating != 'NC-17'}">
+    				<option value="NC-17">NC-17</option>
+    			</c:if>
+    		</select>    		
+    		
+	        <label for="title">검색어(title) :</label> 
+	        <input name="title" type="text">
+	        
+	        <label for="actors">검색어(actor) :</label> 
+	        <input name="actors" type="text">
+	        
+        	<button id="btn" type="button">검색</button>
+    </form>
+    </div>
+    
     <a href="${pageContext.request.contextPath}/admin/getFilmList">전체보기</a>
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>filmId</th>
-                <th>title</th>
-                <th>rentalDuration</th>
-                <th>rentalRate</th>
-                <th>length</th>
-                <th>replacementCost</th>
-            </tr>
-        </thead>
+			<tr>
+				<th>FID</th>
+				<th>title</th>
+				<th>category</th>
+				<th>price</th>
+				<th>length</th>
+				<th>rating</th>
+			</tr>
+		</thead>
         <tbody>
             <c:forEach var="f" items="${filmList}">
                 <tr>
-                	<td>${f.filmId}</td>
-                    <td><a href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${f.filmId}">${f.title}</a></td>
-                    <td>${f.rentalDuration}</td>
-                    <td>${f.rentalRate}</td>
-                    <td>${f.length}</td>
-                    <td>${f.replacementCost}</td>
+                	<td>${f.FID}</td>
+                    <td><a href="${pageContext.request.contextPath}/admin/getFilmOne?filmId=${f.FID}">${f.title}</a></td>
+                    <td>${f.category}</td>
+					<td>${f.price}</td>
+					<td>${f.length}</td>
+					<td>${f.rating}</td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-    
     <!-- 검색어 입력창 -->
     
-    <form action="/admin/getFilmList" method="get">
-        <label for="searchWord">검색어(title) :</label> 
-        <input name="searchWord" type="text">
-        <button type="submit">검색</button>
-    </form>
+    
     
     <ul class="pager">
         <c:if test="${currentPage > 1}">
-            <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a></li>
+            <li class="previous"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage-1}&categoryName=${categoryName}&price=${price}&rating=${rating}&title=${title}&actors=${actors}">이전</a></li>
         </c:if>
         <c:if test="${currentPage < lastPage}">
-            <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a></li>
+            <li class="next"><a href="${pageContext.request.contextPath}/admin/getFilmList?currentPage=${currentPage+1}&categoryName=${categoryName}&price=${price}&rating=${rating}&title=${title}&actors=${actors}">다음</a></li>
         </c:if>
-    </ul>
-
+    </ul> 
+ 
 </div>
 </body>
 </html>

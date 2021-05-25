@@ -16,34 +16,75 @@
 	
 	<select id="selectFilmOne" parameterType="Integer" resultType="java.util.Map">
 		SELECT 
-			f.film_id filmId, f.title title, f.description description, f.release_year releaseYear, l.name, 
-			f.rental_duration rentalDuration, f.rental_rate rentalRate, 
-			f.LENGTH, f.replacement_cost replacementCost, f.rating rating, f.special_features specialFeatures, f.last_update lastUpdate, fl.actors actors, c.name name
-		FROM film f left JOIN film_list fl ON f.film_id = fl.FID
-			LEFT JOIN film_category fc ON fc.film_id = f.film_id
-			JOIN category c ON fc.category_id=c.category_id
+			f.film_id filmId,
+			f.title title,
+			f.description description,
+			f.release_year releaseYear,
+			l.name name, 
+			f.rental_duration rentalDuration,
+			f.rental_rate rentalRate, 
+			f.length length, 
+			f.replacement_cost replacementCost,
+			f.rating rating,
+			f.special_features specialFeatures,
+			f.last_update lastUpdate,
+			fl.actors actors,
+			fl.category category
+		FROM film f 
+			LEFT JOIN film_list fl ON f.film_id = fl.FID
 			JOIN language l ON f.language_id = l.language_id
-		GROUP BY f.film_id
+		WHERE film_id = #{filmId}
+		
+			
 	
 	</select>
 	
-	<select id="selectFilmList" resultType="com.gd.sakila.vo.Film" parameterType="com.gd.sakila.vo.Page">
-		SELECT film_id filmId, title, rental_duration rentalDuration, rental_rate rentalRate, length, replacement_cost replacementCost
-		FROM film 
-	<where>
-		<if test="searchWord != null">
-			title LIKE CONCAT('%',#{searchWord},'%')
-		</if>
-	</where>
-		ORDER BY filmId ASC
-		LIMIT #{beginRow}, #{rowPerPage}
-	</select>
-	
-	<select id="selectTotal" resultType="Integer" parameterType="String">
-		SELECT COUNT(*) FROM film
+	<select id="selectFilmList" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 	FID,
+				title,
+				category,
+				price,
+				length,
+				rating
+		FROM film_list
 		<where>
-			<if test="searchWord != null">
-				title LIKE CONCAT('%',#{searchWord},'%')
+			<if test="categoryName != null">
+				AND category = #{categoryName}
+			</if>
+			<if test="title != null">
+				AND title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test="price != null">
+				AND price = #{price}
+			</if>
+			<if test="rating != null">
+				AND rating = #{rating}
+			</if>
+			<if test="actors != null">
+				AND actors LIKE CONCAT('%',#{actors},'%')
+			</if>
+		</where>
+			ORDER BY FID ASC
+			LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectTotal" resultType="Integer" parameterType="java.util.Map">
+		SELECT COUNT(*) FROM film_list
+		<where>
+			<if test="categoryName != null">
+				AND category = #{categoryName}
+			</if>
+			<if test="title != null">
+				AND title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test="price != null">
+				AND price = #{price}
+			</if>
+			<if test="rating != null">
+				AND rating = #{rating}
+			</if>
+			<if test="actors != null">
+				AND actors LIKE CONCAT('%',#{actors},'%')
 			</if>
 		</where>
 	</select>

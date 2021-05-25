@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gd.sakila.mapper.CategoryMapper;
 import com.gd.sakila.mapper.FilmMapper;
-import com.gd.sakila.vo.Film;
 import com.gd.sakila.vo.Page;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,56 +19,99 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FilmService {
 	@Autowired FilmMapper filmMapper;
-	
+	@Autowired CategoryMapper categoryMapper;
 	// map <-- film, filmcount
 	// 상세보기
-	public Map<String, Object> getFilmOne(int filmId, int storeId) {
+	public Map<String, Object> getFilmOne(int filmId) {
 		// 1) 상세보기
 		Map<String, Object> filmMap = filmMapper.selectFilmOne(filmId);
 		log.debug("filmMap: "+filmMap);
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>(); // method 호출
-		paramMap.put("filmId", filmId); //in
-		paramMap.put("storeId", storeId); // in
-		int filmCount = 0;
-		paramMap.put("filmCount", filmCount); // out
-		List<Integer> filmList = filmMapper.selectFilmInStock(paramMap);
-		filmMapper.selectFilmInStock(paramMap);
-		log.debug("paramMap: "+paramMap);
-		log.debug("filmCount: "+paramMap.get("filmCount"));
-		log.debug("filmList: "+filmList);
+		// 2) 매장별 재고량 파악
+		
+		// 2-1) 지점 1의 재고량
+		int store1FilmCount = 0;
+		Map<String, Object> store1Map = new HashMap<String, Object>(); // method 호출
+		store1Map.put("filmId", filmId); //in
+		store1Map.put("storeId", 1); // in		
+		store1Map.put("filmCount", store1FilmCount); // out
+		List<Integer> store1Stock = filmMapper.selectFilmInStock(store1Map);
+		filmMapper.selectFilmInStock(store1Map);
+		log.debug("paramMap: "+store1Map);
+		log.debug("filmCount: "+store1Map.get("filmCount"));
+		log.debug("store1Stock: "+store1Stock);
+		
+		// 2-1) 지점 1의 재고량
+		int store2FilmCount = 0;
+		Map<String, Object> store2Map = new HashMap<String, Object>(); // method 호출
+		store2Map.put("filmId", filmId); //in
+		store2Map.put("storeId", 2); // in		
+		store2Map.put("filmCount", store2FilmCount); // out
+		List<Integer> store2Stock = filmMapper.selectFilmInStock(store2Map);
+		filmMapper.selectFilmInStock(store2Map);
+		log.debug("paramMap: "+store2Map);
+		log.debug("filmCount: "+store2Map.get("filmCount"));
+		log.debug("store2Stock: "+store2Stock);
 		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		returnMap.put("paramMap", paramMap);
-		returnMap.put("filmCount", filmCount);
-		returnMap.put("filmList", filmList);
+		
+		returnMap.put("store1Stock", store1Map.get("filmCount"));
+		returnMap.put("store2Stock", store2Map.get("filmCount"));
 		returnMap.put("filmMap", filmMap);
 		
 		return returnMap;		
 	}
 	
+	
 	//FilmViewList
-	public Map<String, Object> getFilmList(int currentPage, int rowPerPage, String searchWord) {
+	public Map<String, Object> getFilmList(int currentPage, int rowPerPage, String title, String categoryName, Double price, String rating, String actors) {
 		// 1. film 개수
-		int filmTotal = filmMapper.selectTotal(searchWord);
+		Map<String, Object> totalMap = new HashMap<String, Object>();
+		totalMap.put("title", title);
+		totalMap.put("categoryName", categoryName);
+		totalMap.put("price", price);
+		totalMap.put("rating", rating);
+		totalMap.put("actors", actors);
+		
+		int filmTotal = filmMapper.selectTotal(totalMap);
+		
 		int lastPage = (int)Math.ceil((double)filmTotal / rowPerPage); // Math.ceil은 올림함수
 		log.debug("filmTotal: "+filmTotal);
+		log.debug("lastPage: "+lastPage);
 		
-		// 2. 페이지 설정
+		// 2. 페이징
 		Page page = new Page();
+		int beginRow = (currentPage-1)*rowPerPage;
 		page.setBeginRow((currentPage-1)*rowPerPage);
 		page.setRowPerPage(rowPerPage);
-		page.setSearchWord(searchWord);
 		log.debug("page: "+page);
 		
 		// 3. List
-		List<Film> filmList = filmMapper.selectFilmList(page);
+		Map<String, Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("paramMap", paramMap);
+		paramMap.put("currentPage", currentPage);
+		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("beginRow", beginRow);
+		paramMap.put("categoryName", categoryName);
+		paramMap.put("title", title);
+		paramMap.put("price", price);
+		paramMap.put("rating", rating);
+		paramMap.put("actors", actors);
+		log.debug("paramMap: "+paramMap);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("lastPage", lastPage);
-		map.put("filmList", filmList);
-		log.debug("FilmList map: "+map);
+		List<Map<String, Object>> filmList = filmMapper.selectFilmList(paramMap);
 		
-		return map;
+		// 4. categoryList
+		List<String> categoryNameList = categoryMapper.selectCategoryNameList();
+		
+		Map<String, Object> returnMap = new HashMap<>();
+		
+		returnMap.put("filmList",filmList);
+		returnMap.put("categoryNameList", categoryNameList);
+		returnMap.put("lastPage",lastPage);
+		log.debug("returnMap: "+returnMap);
+		
+		return returnMap;
 	}
+
 }
