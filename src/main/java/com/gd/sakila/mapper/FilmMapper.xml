@@ -13,6 +13,33 @@
 		)
 	}	
 	</select>
+	<insert id="insertActorListByFilm" parameterType="java.util.Map">
+		INSERT
+			film_actor(
+				actor_id, film_id
+				)
+		INTO
+			(#{ck[0]},#{filmId})
+	
+	</insert>
+	<delete id="deleteActorListByFilm" parameterType="int">
+		DELETE 
+		FROM film_actor
+		WHERE film_id=${filmId}
+	</delete>
+	
+	<select id="selectActorListByFilm" parameterType="int" resultType="java.util.Map">
+		SELECT 
+			a.actor_id actorId,
+			CONCAT(a.first_name,' ',a.last_name) name,
+			film_id filmId
+		FROM actor a 
+			LEFT JOIN (	SELECT *
+						FROM film_actor
+						WHERE film_id=${filmId}) t
+			ON a.actor_id=t.actor_id
+			ORDER BY filmId DESC, name
+	</select>
 	
 	<select id="selectFilmOne" parameterType="Integer" resultType="java.util.Map">
 		SELECT 
@@ -34,9 +61,6 @@
 			LEFT JOIN film_list fl ON f.film_id = fl.FID
 			JOIN language l ON f.language_id = l.language_id
 		WHERE film_id = #{filmId}
-		
-			
-	
 	</select>
 	
 	<select id="selectFilmList" resultType="java.util.Map" parameterType="java.util.Map">

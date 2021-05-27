@@ -20,6 +20,29 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
+	
+	public void modifyFilmActor(Map<String, Object> map) {
+		// 1) 기존 배우 삭제
+		int actorRow = filmMapper.deleteActorListByFilm((int)map.get("filmId"));
+		log.debug("delete actorRow: "+actorRow);
+		
+		// 2) 새 배우 추가
+		if(map.get("actorId") != null) {
+			for(int a : (int[])map.get("actorId")) {
+				log.debug("FilmService.modifyFilmActor  actorId:" + a);
+
+				Map<String,Object> parmMap = new HashMap<String, Object>();
+				parmMap.put("actorId", a);
+				parmMap.put("filmId", map.get("filmId"));
+				int insertRow = filmMapper.insertActorListByFilm(parmMap);
+				log.debug("FilmService.modifyFilmActor insertRow:" + insertRow);
+			}
+		}
+	}
+	
+	public List<Map<String, Object>> getActorListByFilm(int filmId) {
+		return filmMapper.selectActorListByFilm(filmId);
+	}
 	// map <-- film, filmcount
 	// 상세보기
 	public Map<String, Object> getFilmOne(int filmId) {

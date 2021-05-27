@@ -35,8 +35,14 @@
                    <td>${filmMap.description}</td>
             </tr>
              <tr>
-                   <td>actors:</td>
-                   <td>${filmMap.actors}</td>
+                   <td>
+						actors: 
+                   		
+                   </td>
+                   <td>
+						${filmMap.actors}
+						<a href="${pageContext.request.contextPath}/admin/getActorListByFilm?filmId=${filmMap.filmId}"><button type="button">출연배우 수정</button></a>
+                   </td>
             </tr>
             <tr>
                    <td>releaseYear :</td>
