@@ -1,5 +1,6 @@
 package com.gd.sakila.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,27 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class FilmController {
 	@Autowired FilmService filmService;
-	
-	@GetMapping("/modifyFilmActor")
-	public String modifyFilmActor(	Model model,
-									@RequestParam(value="filmId", required = true) int filmId) {
-		List<Map<String, Object>> list = filmService.getActorListByFilm(filmId);
-		log.debug("list: "+list);
-		model.addAttribute("filmId",filmId);
-		model.addAttribute("actorList", list);
-		return "modifyFilmActor";
-	}
-	
+
 	// 영화배우 수정 액션
 	@PostMapping("/modifyFilmActor")
-	public String modifyFilmActor(	@RequestParam(value="filmId", required = true) int filmId,
-									@RequestParam(value="ck") int[] ck) {
+	public String modifyFilmActor(	@RequestParam(value="actorId") List<Integer> actorId,
+									@RequestParam(value="filmId", required = true) int filmId
+									) {
 		log.debug("filmId: "+filmId);
-		log.debug("ck length: "+ck.length);
-		if(ck!=null) {
-			log.debug("actorid: "+ck);
-		}
-		filmService.modifyFilmActor(null);
+		log.debug("actorId: "+actorId);
+		filmService.modifyFilmActor(actorId,filmId);
 		// service - mapper
 		// delete from film_actor where film_id = #{filmId}
 		// for{
@@ -56,7 +45,7 @@ public class FilmController {
 								@RequestParam(value="filmId", required = true) int filmId) {
 		List<Map<String, Object>> list = filmService.getActorListByFilm(filmId);
 		log.debug("list.size(): "+list.size());
-		model.addAttribute("filmActorList", list);
+		model.addAttribute("actorList", list);
 		model.addAttribute("filmId", filmId);
 		return "getActorListByFilm";		
 	}

@@ -11,12 +11,12 @@
 	<div>
 		<form action="${pageContext.request.contextPath}/admin/modifyFilmActor" method="post">
 			<input type="hidden" name="filmId" value="${filmId}">
-			<c:forEach var="m" items="${filmActorList}">
+			<c:forEach var="m" items="${actorList}">
 					<c:if test="${m.filmId == null}">
-						<input type="checkbox" name="ck" value="${m.actorId}">
+						<input type="checkbox" name="actorId" value="${m.actorId}">
 					</c:if>
 					<c:if test="${m.filmId != null}">
-						<input type="checkbox" name="ck" value="${m.actorId}" checked="checked" >
+						<input type="checkbox" name="actorId" value="${m.actorId}" checked="checked" >
 					</c:if>
 					<span style="color:red">${m.name.substring(0,1)}</span>
 					${m.name.substring(1)}&nbsp;

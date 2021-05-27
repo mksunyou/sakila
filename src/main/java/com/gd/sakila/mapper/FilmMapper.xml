@@ -14,12 +14,14 @@
 	}	
 	</select>
 	<insert id="insertActorListByFilm" parameterType="java.util.Map">
-		INSERT
+		INSERT INTO
 			film_actor(
 				actor_id, film_id
 				)
-		INTO
-			(#{ck[0]},#{filmId})
+		VALUES
+			<foreach collection="actorId" item="actorId" separator=", ">
+	 			(#{actorId}, #{filmId})
+	 		</foreach>
 	
 	</insert>
 	<delete id="deleteActorListByFilm" parameterType="int">

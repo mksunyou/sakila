@@ -21,26 +21,28 @@ public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
 	
-	public void modifyFilmActor(Map<String, Object> map) {
+	public int modifyFilmActor(List<Integer> actorId, int filmId) {
 		// 1) 기존 배우 삭제
-		int actorRow = filmMapper.deleteActorListByFilm((int)map.get("filmId"));
+		int actorRow = filmMapper.deleteActorListByFilm(filmId);
 		log.debug("delete actorRow: "+actorRow);
 		
 		// 2) 새 배우 추가
-		if(map.get("actorId") != null) {
-			for(int a : (int[])map.get("actorId")) {
-				log.debug("FilmService.modifyFilmActor  actorId:" + a);
-
-				Map<String,Object> parmMap = new HashMap<String, Object>();
-				parmMap.put("actorId", a);
-				parmMap.put("filmId", map.get("filmId"));
-				int insertRow = filmMapper.insertActorListByFilm(parmMap);
-				log.debug("FilmService.modifyFilmActor insertRow:" + insertRow);
-			}
+		if(actorId==null) {
+			return 0;
 		}
+		Map<String, Object> map = new HashMap<>();		
+		map.put("actorId", actorId);
+		map.put("filmId",filmId);
+		
+		int insertRow = filmMapper.insertActorListByFilm(map);
+		
+		log.debug("insert actorRow:" +map);
+		
+		return insertRow;
 	}
 	
 	public List<Map<String, Object>> getActorListByFilm(int filmId) {
+		
 		return filmMapper.selectActorListByFilm(filmId);
 	}
 	// map <-- film, filmcount
