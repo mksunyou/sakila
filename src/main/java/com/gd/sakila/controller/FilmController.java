@@ -1,6 +1,5 @@
 package com.gd.sakila.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.FilmService;
+import com.gd.sakila.service.LanguageService;
+import com.gd.sakila.vo.Category;
+import com.gd.sakila.vo.FilmForm;
+import com.gd.sakila.vo.Language;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +24,29 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class FilmController {
 	@Autowired FilmService filmService;
-
+	@Autowired LanguageService languageService;
+	
+	// 영화 추가 list 폼
+	@GetMapping("/addFilm")
+	public String addFilm(Model model) {
+		List<Category> categoryList = filmService.getCategoryList();
+		List<Language> languageList=languageService.getLanguageList();
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("languageList", languageList);
+		log.debug("categoryList: "+categoryList);
+		log.debug("languageList: "+languageList);		
+		
+		return "addFilm";
+	}
+	// 영화 추가 액션
+	@PostMapping("/addFilm") // 매개변수의 이름과 name이 같으면 맵핑, 참조타입은 필드를 찾는것이 아니라 setFilmId를 찾음.
+	public String addFilm(FilmForm filmForm) {  // 참조타입은 필드명과 name이 같으면 맵핑. 스프링에서는 이것을 커멘드타입. reflectionAPI 검색해보자!
+		int filmId = filmService.addFilm(filmForm);
+		log.debug("filmId: "+filmId);
+		return "redirect:/admin/getFilmOne?filmId="+filmId;
+		
+	}
+	
 	// 영화배우 수정 액션
 	@PostMapping("/modifyFilmActor")
 	public String modifyFilmActor(	@RequestParam(value="actorId") List<Integer> actorId,

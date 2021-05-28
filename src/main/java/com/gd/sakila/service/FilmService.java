@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.sakila.mapper.CategoryMapper;
 import com.gd.sakila.mapper.FilmMapper;
+import com.gd.sakila.mapper.LanguageMapper;
+import com.gd.sakila.vo.Category;
+import com.gd.sakila.vo.Film;
+import com.gd.sakila.vo.FilmForm;
 import com.gd.sakila.vo.Page;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +24,32 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmService {
 	@Autowired FilmMapper filmMapper;
 	@Autowired CategoryMapper categoryMapper;
+	@Autowired LanguageMapper languageMapper;
 	
+	/*
+	 * param : film 입력폼을 통해 받아 오는 값
+	 * return : 입력된 filmId값을 리턴
+	 */
+	
+	// CategoryService 로 이동해야 함.
+	public List<Category> getCategoryList() {
+		return categoryMapper.selectCategoryNameList();
+	}
+	
+	// 영화추가 
+	public int addFilm(FilmForm filmForm) {
+		Film film = filmForm.getFilm();
+		filmMapper.insertFilm(film); // film ID가 생성된 후 film.setFilmId(생성된 filmId값)가 호출.
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("categoryId", filmForm.getCategory().getCategoryId());
+		map.put("filmId", film.getFilmId());
+		map.put("specialFeatures", filmForm.getSpecialFeatures());
+		log.debug("addFilm map: "+map);
+		filmMapper.insertFilmCategory(map);
+		return film.getFilmId(); // controller에서 filmId 값을 바로 가져오기 위해.
+	}
+	
+	// 영화배우 수정
 	public int modifyFilmActor(List<Integer> actorId, int filmId) {
 		// 1) 기존 배우 삭제
 		int actorRow = filmMapper.deleteActorListByFilm(filmId);
@@ -40,7 +69,7 @@ public class FilmService {
 		
 		return insertRow;
 	}
-	
+	// 영화별 배우 추가 리스트
 	public List<Map<String, Object>> getActorListByFilm(int filmId) {
 		
 		return filmMapper.selectActorListByFilm(filmId);
@@ -127,7 +156,7 @@ public class FilmService {
 		List<Map<String, Object>> filmList = filmMapper.selectFilmList(paramMap);
 		
 		// 4. categoryList
-		List<String> categoryNameList = categoryMapper.selectCategoryNameList();
+		List<Category> categoryNameList = categoryMapper.selectCategoryNameList();
 		
 		Map<String, Object> returnMap = new HashMap<>();
 		

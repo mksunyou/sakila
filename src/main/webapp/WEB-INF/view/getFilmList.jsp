@@ -31,12 +31,12 @@
     		<label for="category"> Category :</label> 
 			<select name="categoryName">
 			<option value="">카테고리선택</option>
-    			<c:forEach var="name" items="${categoryNameList}">
-    				<c:if test="${name == categoryName}"> 
-    					<option value="${name}" selected="selected">${name}</option>
+    			<c:forEach var="c" items="${categoryNameList}">
+    				<c:if test="${c.name == categoryName}"> 
+    					<option value="${c.name}" selected="selected">${c.name}</option>
     				</c:if>
-    				<c:if test="${name != categoryName}"> 
-    					<option value="${name}">${name}</option>
+    				<c:if test="${c.name != categoryName}"> 
+    					<option value="${c.name}">${c.name}</option>
     				</c:if>
     			</c:forEach>
     		</select>
@@ -110,6 +110,7 @@
     </div>
     
     <a href="${pageContext.request.contextPath}/admin/getFilmList">전체보기</a>
+     <a href="${pageContext.request.contextPath}/admin/addFilm">영화 추가</a>
     <table class="table table-striped">
         <thead>
 			<tr>

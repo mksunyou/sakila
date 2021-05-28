@@ -1,5 +1,6 @@
 package com.gd.sakila.vo;
 
+
 import lombok.Data;
 
 @Data
@@ -15,6 +16,6 @@ public class Film {
 	private int length;
 	private double replacementCost;
 	private String rating;
-	private String specialFeatures;
+	private String specialFeatures; // 여러개의 값이 들어감.'Trailers','Commentaries','Deleted Scenes','Behind the Scenes'
 	private String lastUpdate;
 }
