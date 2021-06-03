@@ -8,7 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gd.sakila.mapper.AddressMapper;
+import com.gd.sakila.mapper.CityMapper;
 import com.gd.sakila.mapper.CustomerMapper;
+import com.gd.sakila.mapper.PaymentMapper;
+import com.gd.sakila.vo.Address;
+import com.gd.sakila.vo.Customer;
+import com.gd.sakila.vo.CustomerForm;
 import com.gd.sakila.vo.Page;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +24,48 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CustomerService {
 	@Autowired CustomerMapper customerMapper;
+	@Autowired PaymentMapper paymentMapper;
+	@Autowired CityMapper cityMapper;
+	@Autowired AddressMapper addressMapper;
+	
+	// 고객 추가
+	public int addCustomer(CustomerForm customerForm) {
+		Customer customer = customerForm.getCustomer();
+		Address address = customerForm.getAddress();
+		
+		addressMapper.insertAddress(address);
+		
+		//customer에 addressId 입력
+		customer.setAddressId(address.getAddressId());
+		
+		int row = customerMapper.insertCustomer(customer);
+		log.debug("addCustomer row: "+row);
+		
+		return customer.getCustomerId();
+	}
+	
+	
+	//고객 상세보기
+	public Map<String, Object> getCustomerOne(int customerId) {
+		// 상세보기
+		Map<String, Object> customerMap = customerMapper.selectCustomerOne(customerId);
+		log.debug("customerMap: "+customerMap);
+		
+		// 고객 대출 리스트
+		List<Map<String, Object>> rentalList = customerMapper.selectRentalListByCustomer(customerId);
+		log.debug("rentalList: "+rentalList);
+		
+		// 총 대출 금액
+		Map<String, Object> paymentMap = paymentMapper.selectPaymentByCustomer(customerId);
+		log.debug("paymentMap: "+paymentMap);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("customerMap",customerMap);
+		map.put("rentalList",rentalList);
+		map.put("paymentMap",paymentMap);
+		
+		return map;
+	}
 	
 	//고객 리스트
 	public Map<String, Object> getCustomerList(int rowPerPage, int currentPage, String name, Double phone, Double SID) {

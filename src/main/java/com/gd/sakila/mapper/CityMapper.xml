@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.sakila.mapper.CityMapper">
+	<insert id="insertCity" parameterType="com.gd.sakila.vo.City">
+		INSERT INTO CITY {
+					city, country_id
+				} VALUES {
+					#{city}, #{countryId}
+				}		
+	</insert>
+	<select id="selectCity" parameterType="int" resultType="com.gd.sakila.vo.City">
+		SELECT
+			city_id cityId,
+			city
+		FROM city
+		WHERE country_id=#{countryId}
+	</select>
+</mapper>

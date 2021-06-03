@@ -1,13 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.CustomerMapper">
+	
+	<insert id="insertCustomer" parameterType="com.gd.sakila.vo.Customer">
+		<selectKey keyProperty="customerId" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO customer(
+			store_id, first_name, last_name,
+			email, address_id, create_date
+		) VALUES (
+			#{storeId}, #{firstName}, #{lastName},
+			#{email}, #{addressId}, NOW()
+		)
+		
+	</insert>
+
+	<select id="selectRentalListByCustomer" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			r.customer_id customerId,
+			i.inventory_id inventoryId,
+			i.store_id storeId, 
+			r.rental_id rentalId, 
+			r.rental_date rentalDate, 
+			r.return_date returnDate, 
+			f.title title, 
+			p.amount amount,
+			CASE WHEN 
+				r.return_date IS NULL AND DATEDIFF(NOW(), r.rental_date)> f.rental_duration then '연체중' 
+				WHEN r.return_date IS NULL then '대여중' ELSE '반납완료' END 'status' 
+		FROM rental r, payment p, film f, inventory i
+		WHERE p.rental_id = r.rental_id 
+			AND r.inventory_id = i.inventory_id 
+			AND i.film_id = f.film_id
+			AND r.customer_id = #{customerId}
+		ORDER BY r.rental_date DESC
+	</select>
+	<select id="selectCustomerOne" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		   c.customer_id customerId,
+		   c.store_id storeId,
+		   c.email email,
+		   c.create_date createDate,
+		   c.active active,
+		   cl.name name,
+		   cl.address address,
+		   cl.`zip code` zipcode,
+		   cl.phone phone,
+		   cl.city city,
+		   cl.country country
+		FROM customer c INNER JOIN customer_list cl
+		      ON c.customer_id = cl.ID
+		WHERE c.customer_id = #{customerId}
+	</select>
 	<select id="selectCustomerList" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
+			ID,
 			name, 
 			phone, 
 			SID, 
-			ID
-		FROM customer_list
+			 case when ID IN(SELECT c.ID
+                           FROM customer_list c 
+                           INNER JOIN 
+                           (SELECT  p.customer_id,   
+                                    case when DATEDIFF(r.return_date, r.rental_date) <![CDATA[<]]> rental_duration 
+                                         then 'overdue' END 'overdue'
+                           FROM payment p, rental r, inventory i, film f
+                           WHERE p.rental_id = r.rental_id AND
+                                 r.inventory_id = i.inventory_id AND
+                                 i.film_id = f.film_id) t
+                           ON c.ID = t.customer_id 
+                           GROUP BY c.Id, overdue 
+                           HAVING overdue 
+                           IS NOT NULL AND COUNT(*)>15) 
+                             then 'black'
+                when ID IN (SELECT
+                              customer_id
+                              FROM payment
+                              GROUP BY customer_id
+                            HAVING COUNT(customer_id)>30 
+                            AND SUM(amount)>150)
+                           then 'vip'
+          END 'blackVipList'
+          FROM customer_list
 		<where>
 			<if test="name != null">
 				AND name like CONCAT('%',#{name},'%')

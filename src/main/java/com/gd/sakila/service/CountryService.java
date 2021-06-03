@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.sakila.mapper.CountryMapper;
+import com.gd.sakila.vo.Category;
 import com.gd.sakila.vo.Country;
 import com.gd.sakila.vo.Page;
 
 @Service
 @Transactional
 public class CountryService {
-	@Autowired
-	private CountryMapper countryMapper;
+	@Autowired CountryMapper countryMapper;
+	public List<Country> getCountryList() {
+		return countryMapper.selectCountry();
+	}
+	
 	public Map<String, Object> getCountryList(int currentPage, int rowPerPage) {
 		//beginRow
 		int beginRow = (currentPage-1) * rowPerPage;
