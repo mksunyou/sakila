@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.InventoryMapper">
-	<select id="totalInventory" resultType="Integer" parameterType="java.util.Map">
-	SELECT COUNT(*) FROM inventory i, film f
+	
+	<delete id="deleteInventory" parameterType="com.gd.sakila.vo.Inventory">
+		DELETE FROM inventory
+			WHERE inventory_id=#{inventoryId}
+	</delete>
+	
+	<insert id="insertInventory" parameterType="com.gd.sakila.vo.Inventory">
+		INSERT INTO inventory(film_id, store_id	) 
+			VALUES (#{filmId}, #{storeId} )	
+	</insert>
+	<select id="totalInventory" resultType="Integer" parameterType="com.gd.sakila.vo.Inventory">
+	SELECT COUNT(*) FROM film
 		<where>
 			<if test="title != null">
-				AND f.title LIKE CONCAT('%',#{title},'%')
-			</if>
-			<if test="storeId != null">
-				AND i.store_id = #{storeId}
+				AND title LIKE CONCAT('%',#{title},'%')
 			</if>
 		</where>
 	</select>
 	
 	<select id="selectInventoryList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT 
-		   i.inventory_id inventoryId, 
-		   i.store_id storeId, 
-		   f.title title, 
-		   case when inventory_held_by_customer (i.inventory_id) IS NOT null
-		         then '대여중'
-		         ELSE '재고있음'
-		   END 'stockStatus'
-		FROM inventory i, film f 
+		SELECT
+			f.film_id filmId,
+			f.title title,
+			sum(i.store_id=1) as store1,
+			sum(i.store_id=2) as store2,
+			count(i.film_id) AS total
+		FROM film f left join inventory i
+			ON i.film_id = f.film_id
 		<where>
 			<if test="title != null">
 				AND f.title LIKE CONCAT('%',#{title},'%')
 			</if>
-			<if test="storeId != null">
-				AND i.store_id = #{storeId}
-			</if>
 		</where>
-		WHERE i.film_id=f.film_id
-		ORDER BY i.inventory_id ASC
+		GROUP BY f.film_id
 		LIMIT #{beginRow}, #{rowPerPage}
 		
 			

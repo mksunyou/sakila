@@ -28,22 +28,6 @@
      <div>    	
     <!-- 검색어 입력창 -->
     	<form id="inventoryForm" action="${pageContext.request.contextPath}/admin/getInventoryList" method="get">	
-	        <label for="storeId"> storeId :</label> 
-    		 <select name="storeId">
-    			<option value="0">매장 선택</option>
-    			<c:if test="${storeId == 1}">
-    				<option value="1" selected="selected">1</option>
-    			</c:if>
-    			<c:if test="${storeId != 1}">
-    				<option value="1">1</option>
-    			</c:if>
-    			<c:if test="${storeId == 2}">
-    				<option value="2" selected="selected">2</option>
-    			</c:if>
-    			<c:if test="${storeId != 2}">
-    				<option value="2">2</option>
-    			</c:if>
-    		</select>
     		
 	        <label for="title">검색어(name) :</label> 
 	        <input name="title" type="text">
@@ -51,22 +35,47 @@
         	<button id="btn" type="button">검색</button>
     </form>
     </div>
+    <a href="${pageContext.request.contextPath}/admin/addInventory">재고 추가</a>
+    <a href="${pageContext.request.contextPath}/admin/removeInventory">재고 삭제</a>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>inventoryId</th>
-                <th>storeId</th>
+                <th>filmId</th>
                 <th>title</th>
-                <th>재고현황</th>
+                <th>총재고량</th>
+                <th>매장1 재고</th>
+                <th>매장2 재고</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="i" items="${inventoryList}">
                 <tr>
-                	<td>${i.inventoryId }</td>
-                	<td>${i.storeId}</td>
+                	<td>${i.filmId}</td>
                 	<td>${i.title}</td>
-                	<td>${i.stockStatus}</td>
+                	<td>
+	                	<c:if test="${i.total==null}">
+	                		${i.total}=0;
+	                	</c:if>
+	                	<c:if test="${i.total!=null}">
+	                		${i.total}
+	                	</c:if>
+	                </td>
+                	<td>
+	                	<c:if test="${i.store1==null}">
+	                		0
+	                	</c:if>
+	                	<c:if test="${i.store1!=null}">
+	                		${i.store1}
+	                	</c:if>
+	                </td>
+	                <td>
+	                	<c:if test="${i.store2==null}">
+	                		0
+	                	</c:if>
+	                	<c:if test="${i.store2!=null}">
+	                		${i.store2}
+	                	</c:if>
+	                </td>
                 	
                 </tr>
             </c:forEach>

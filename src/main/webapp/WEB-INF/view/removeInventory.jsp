@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- bootstrap을 사용하기 위한 CDN주소 -->
+<!-- Latest compiled and minified CSS -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
+<!-- jquery를 사용하기위한 CDN주소 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	$('#btn').click(function(){
+		console.log('click!');
+		
+		//유효성 검사 만들기
+		$('#removeInventoryAction').submit();
+	});
+	
+	
+	
+});
+</script>
+<title>removeInventory</title>
+</head>
+<body>
+   <div class="container">
+      <h1>removeInventory</h1>
+      <form id="removeInventoryAction" method="post" action="${pageContext.request.contextPath}/admin/removeInventory">
+         <table class="table table-hover">
+             <tr>
+	           <th>삭제될 재고</th>
+	            <td>
+	              <input name="inventoryId" id=inventoryId>	              					
+	            </td>
+	         </tr>
+         </table>
+         
+         <button id="btn" class="btn btn-default">등록</button>
+      </form>
+      
+   </div>
+</body>
+</html>

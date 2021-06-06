@@ -14,6 +14,38 @@
 	}	
 	</select>
 	
+	<update id="updateFilmCategory" parameterType="com.gd.sakila.vo.FilmForm">
+	UPDATE film_category
+		SET category_id = #{categoryId}
+	WHERE film_id = #{filmId}
+	
+	</update>
+	
+	<update id="updateFilm" parameterType="com.gd.sakila.vo.Film">
+		UPDATE film
+			SET title = #{title},
+				description = #{description},
+				release_year = #{releaseYear},
+				language_id = #{languageId},
+				original_language_id = #{originalLanguageId},
+				rental_duration = #{rentalDuration},
+				rental_rate = #{rentalRate},
+				length = #{length},
+				replacement_cost = #{replacementCost},
+				rating = #{rating},
+				special_features = #{specialFeatures}
+		WHERE film_id = #{filmId}
+	
+	</update>	
+	
+	<select id="selectFilmListByInventory" resultType="com.gd.sakila.vo.Film">
+		SELECT
+			film_id filmId,
+			title
+		FROM
+			film
+	</select>
+	
 	<insert id="insertFilmCategory" parameterType="java.util.Map">
 		INSERT INTO film_category (
 			film_id,

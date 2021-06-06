@@ -31,6 +31,10 @@
                    <td>${filmMap.title}</td>
             </tr>
             <tr>
+                   <td>category:</td>
+                   <td>${filmMap.category}</td>
+            </tr>
+            <tr>
                    <td>description:</td>
                    <td>${filmMap.description}</td>
             </tr>
@@ -91,8 +95,8 @@
         </tbody>
     </table>
        <div>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/">수정</a>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/">삭제</a>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyFilm?filmId=${filmMap.filmId}">수정</a>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeFilm">삭제</a>
           <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getFilmList">영화 목록</a>   
        </div>
 </div>

@@ -31,6 +31,24 @@ public class FilmService {
 	 * return : 입력된 filmId값을 리턴
 	 */
 	
+	// 영화정보 수정
+	public int modifyFilm(FilmForm filmForm) {
+		Film film = filmForm.getFilm();
+		filmMapper.updateFilm(film);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("filmId", film.getFilmId());
+		map.put("categoryId", filmForm.getCategory().getCategoryId());
+		map.put("specialFeatures", filmForm.getSpecialFeatures());
+		log.debug("map: "+map);
+		filmMapper.updateFilmCategory(map);
+		return film.getFilmId();
+	}
+	
+	// 재고추가시 영화 리스트
+	public List<Film> getFilmListByInventory() {
+		return filmMapper.selectFilmListByInventory();
+	}
+	
 	// CategoryService 로 이동해야 함.
 	public List<Category> getCategoryList() {
 		return categoryMapper.selectCategoryNameList();

@@ -1,5 +1,6 @@
 package com.gd.sakila.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,30 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmController {
 	@Autowired FilmService filmService;
 	@Autowired LanguageService languageService;
+	
+	// 영화 수정 액션
+	@PostMapping("modifyFilm")
+	public String modifyFilm(FilmForm filmForm) {
+		filmService.modifyFilm(filmForm);
+		log.debug("filmForm "+filmForm);
+		return "redirect:/admin/getFilmOne?filmId="+filmForm.getFilm().getFilmId();
+	}
+	
+	// 영화 수정 폼
+	@GetMapping("/modifyFilm")
+	public String modifyFilm(Model model,
+								@RequestParam(value="filmId")int filmId) {
+		List<Category> categoryList = filmService.getCategoryList();
+		List<Language> languageList = languageService.getLanguageList();
+		Map<String, Object> map = filmService.getFilmOne(filmId);
+		model.addAttribute("filmMap", map.get("filmMap"));
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("languageList", languageList);
+		log.debug("filmMap: "+map.get("filmMap"));
+		log.debug("categoryList: "+categoryList);
+		log.debug("languageList: "+languageList);
+		return "modifyFilm";
+	}
 	
 	// 영화 추가 list 폼
 	@GetMapping("/addFilm")
