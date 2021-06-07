@@ -29,6 +29,28 @@ public class CustomerController {
 	@Autowired CityMapper cityMapper;
 	@Autowired AddressMapper addressMapper;
 	
+	
+	// 고객 수정 액션
+	@PostMapping("/modifyCustomer")
+	public String modifyCustomer(CustomerForm customerForm) {
+		int customerId = customerService.modifyCustomer(customerForm);
+		log.debug("modify customerId: "+customerId);
+		return "redirect:/admin/getCustomerOne?customerId="+customerId;
+	}
+	
+	// 고객 수정 폼
+	@GetMapping("/modifyCustomer")
+	public String modifyCustomer(Model model,
+									@RequestParam(value="customerId", required=true) int customerId) {
+		List<Country> countryList = countryService.getCountryList();
+		Map<String, Object> map = customerService.getCustomerOne(customerId);
+		model.addAttribute("customerMap",map.get("customerMap"));
+		model.addAttribute("countryList",countryList);
+		log.debug("countryList: "+countryList);
+		return "modifyCustomer";
+		
+	}
+	
 	//고객 추가 액션
 	@PostMapping("/addCustomer")
 	public String addCustomer(CustomerForm customerForm) {

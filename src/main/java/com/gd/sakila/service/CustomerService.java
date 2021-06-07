@@ -28,6 +28,22 @@ public class CustomerService {
 	@Autowired CityMapper cityMapper;
 	@Autowired AddressMapper addressMapper;
 	
+	
+	// 고객 수정
+	public int modifyCustomer(CustomerForm customerForm) {
+		Customer customer = customerForm.getCustomer();
+		Address address = customerForm.getAddress();
+		
+		addressMapper.updateAddress(address);
+		
+		customer.setAddressId(address.getAddressId());
+		
+		int row = customerMapper.updateCustomer(customer);
+		log.debug("modify row: "+row);
+		
+		return customer.getCustomerId();
+	}
+	
 	// 고객 추가
 	public int addCustomer(CustomerForm customerForm) {
 		Customer customer = customerForm.getCustomer();

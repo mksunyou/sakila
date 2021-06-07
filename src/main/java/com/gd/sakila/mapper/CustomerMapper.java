@@ -9,6 +9,7 @@ import com.gd.sakila.vo.Customer;
 
 @Mapper
 public interface CustomerMapper {
+	int updateCustomer(Customer customer);
 	int insertCustomer(Customer customer);
 	List<Map<String, Object>> selectRentalListByCustomer(int customerId);
 	Map<String, Object> selectCustomerOne(int customerId);

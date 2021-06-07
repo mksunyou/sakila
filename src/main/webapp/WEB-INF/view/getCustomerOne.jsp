@@ -37,8 +37,8 @@
 <div class="container">
     <h1>CustomerOne</h1>
      <div>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyCustomerOne?boardId=${boardMap.boardId}">수정</a>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeBoard?boardId=${boardMap.boardId}">삭제</a>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyCustomer?customerId=${customerMap.customerId}">수정</a>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeBoard?customerId=${customerMap.customerId}">삭제</a>
           <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList">고객목록</a>   
        </div>
      <table class="table">

@@ -14,19 +14,26 @@
 <!-- jquery를 사용하기위한 CDN주소 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-$(document).ready(function())
+$(document).ready(function(){
+	console.log("document ready!");
+	$('#btn').click(function(){
+		console.log("btn click!");
+		//폼 유효성검사
+		$('#modifyForm').submit();
+	});
+ });
 </script>
 <title>modifyFilm</title>
 </head>
 <body>
    <div class="container">
       <h1>modifyFilm</h1>
-      <form method="post" action="${pageContext.request.contextPath}/admin/modifyFilm">
+      <form id="modifyForm" method="post" action="${pageContext.request.contextPath}/admin/modifyFilm">
          <table class="table table-hover">
           	<tr>
                <td>filmId</td>
                <td>
-                  <input type="text" name="filmId" id="filmId" value="${filmMap.filmId}" readonly="readonly" class="form-control"><!-- FilmForm.film.title로 들어감. -->
+                  <input type="text" name="film.filmId" id="film.filmId" value="${filmMap.filmId}" readonly="readonly" class="form-control"><!-- FilmForm.film.title로 들어감. -->
                </td>
             </tr>
             <tr>

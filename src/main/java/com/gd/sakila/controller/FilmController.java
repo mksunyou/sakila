@@ -42,6 +42,7 @@ public class FilmController {
 		List<Category> categoryList = filmService.getCategoryList();
 		List<Language> languageList = languageService.getLanguageList();
 		Map<String, Object> map = filmService.getFilmOne(filmId);
+		model.addAttribute("map",map);
 		model.addAttribute("filmMap", map.get("filmMap"));
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("languageList", languageList);
