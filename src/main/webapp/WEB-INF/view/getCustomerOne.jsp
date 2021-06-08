@@ -39,8 +39,9 @@
      <div>
           <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/modifyCustomer?customerId=${customerMap.customerId}">수정</a>
           <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/removeBoard?customerId=${customerMap.customerId}">삭제</a>
-          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList">고객목록</a>   
-       </div>
+          <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/getCustomerList">고객목록</a>
+        
+     </div>
      <table class="table">
          <tbody>
              <tr>
@@ -95,6 +96,10 @@
            	
         </tbody>
     </table>
+    <div>
+      <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addRental?customerId=${customerMap.customerId}">대출</a>
+	  <a class="btn btn-default" href="${pageContext.request.contextPath}/admin/addReturn?customerId=${customerMap.customerId}">반납</a>
+    </div>
     
     <table class="table">
     	<thead>

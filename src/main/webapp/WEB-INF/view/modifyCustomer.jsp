@@ -120,7 +120,7 @@ $(document).ready(function(){
 	         </tr>
 	         <tr>
 	            <th>email</th>
-	            <td><input type="email" id="email" name="customer.email" placeholder="email"></td>
+	            <td><input type="email" id="email" name="customer.email" value="${customerMap.email}" placeholder="email"></td>
 	            
 	         </tr>
 	         <tr>
@@ -144,26 +144,24 @@ $(document).ready(function(){
 						</div>
 					</td>
 				</tr>
-	         
-	         
 	         <tr>
 	            <th>address2</th>
-	            <td><input type="text" id="address2" placeholder="address2" name="address.address2"></td>
+	            <td><input type="text" id="address2" placeholder="${customerMap.address2}" name="address.address2"></td>
 	         </tr>
 	         
 	         <tr>
 	            <th>district</th>
-	            <td><input id="district" type="text" placeholder="district" name="address.district"></td>
+	            <td><input id="district" type="text" name="address.district"></td>
 	         </tr>
 	         <tr>
 	            <th>postal_code</th>
-	            <td><input id="postalCode" type="text" placeholder="postalCode" name="address.postalCode"></td>
+	            <td><input id="postalCode" type="text" placeholder="${customerMap.zipcode}" name="address.postalCode"></td>
 	         </tr>
 	         
 	         <tr>
 	            <th>phone</th>
 	            <td>
-	               <input id="phone" type="text" placeholder="phone" name="address.phone">
+	               <input id="phone" type="text" placeholder="${customerMap.phone}" name="address.phone">
 	               <button type="button" id="phoneCheckBtn">중복검사</button>
 	               <span id="phoneTarget">중복 검사를 해주세요.</span>
 	            </td>

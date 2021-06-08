@@ -66,8 +66,7 @@ public class CustomerController {
 		model.addAttribute("countryList",countryList);
 		log.debug("countryList: "+countryList);
 		return "addCustomer";
-	}
-	
+	}	
 	
 	//고객 상세보기
 	@GetMapping("/getCustomerOne")

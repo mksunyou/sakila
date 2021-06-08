@@ -14,6 +14,17 @@
 	}	
 	</select>
 	
+	<select id="selectFilmListByRental" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			i.inventory_id inventoryId,
+			f.film_id filmId,
+			f.title,
+			f.rental_rate rentalRate
+		FROM
+			inventory i, film f
+		WHERE f.film_id=i.film_id
+	</select>
+	
 	<update id="updateFilmCategory" parameterType="com.gd.sakila.vo.FilmForm">
 	UPDATE film_category
 		SET category_id = #{categoryId}

@@ -31,6 +31,12 @@ public class FilmService {
 	 * return : 입력된 filmId값을 리턴
 	 */
 	
+	// 대출 영화 정보
+	public List<Map<String, Object>> getFilmListByRental() {
+		
+		return filmMapper.selectFilmListByRental();
+	}
+	
 	// 영화정보 수정
 	public int modifyFilm(FilmForm filmForm) {
 		Film film = filmForm.getFilm();
