@@ -1,6 +1,7 @@
 package com.gd.sakila.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 public class StaffService {
 	@Autowired StaffMapper staffMapper; // DI, @Autowired가 없으면 --> NullPointException 발생...
 	@Autowired StaffViewListMapper staffViewListMapper;
+	
+	// staff 추가
+	public int addStaff(Staff staff) {
+		staffMapper.insertStaff(staff);
+		return staff.getStaffId();
+	}
+	
+	// staff 상세보기
+	public Map<String, Object> getStaffOne(int staffId) {
+		Map<String, Object> map = staffMapper.selectStaffOne(staffId);
+		log.debug("map: "+map);
+		return map;
+	}
 	
 	// 로그인 staff
 	public Staff login(Staff staff) {

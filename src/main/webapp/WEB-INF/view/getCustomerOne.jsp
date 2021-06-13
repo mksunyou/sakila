@@ -66,7 +66,14 @@
             </tr>
             <tr>
                    <td>active :</td>
-                   <td>${customerMap.active}</td>
+                   <td>
+						<c:if test="${customerMap.active==true}">
+							È°µ¿ °í°´
+						</c:if>
+						<c:if test="${customerMap.active==false}">
+							ÈÞ¸é °í°´
+						</c:if>
+                   </td>
             </tr>
             
             <tr>

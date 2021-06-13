@@ -88,7 +88,6 @@ $(document).ready(function(){
                <td>originalLanguage</td>
                <td>
                   <select name="film.originalLanguageId" id ="originalLanguage" class="form-control">
-                     <option value="">======</option>
                      <c:forEach var="lang" items="${languageList}">
                         <option value="${lang.languageId}">${lang.name}</option>
                      </c:forEach>

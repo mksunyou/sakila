@@ -37,7 +37,7 @@
 			SET title = #{title},
 				description = #{description},
 				release_year = #{releaseYear},
-				language_id = #{languageId},
+				language_id = #{languageId},				
 				original_language_id = #{originalLanguageId},
 				rental_duration = #{rentalDuration},
 				rental_rate = #{rentalRate},

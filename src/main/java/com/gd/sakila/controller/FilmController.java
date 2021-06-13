@@ -31,7 +31,7 @@ public class FilmController {
 	@PostMapping("modifyFilm")
 	public String modifyFilm(FilmForm filmForm) {
 		filmService.modifyFilm(filmForm);
-		log.debug("filmForm "+filmForm);
+		log.debug("filmForm "+filmForm);		
 		return "redirect:/admin/getFilmOne?filmId="+filmForm.getFilm().getFilmId();
 	}
 	
