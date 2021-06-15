@@ -30,10 +30,13 @@ public class FilmService {
 	 * param : film 입력폼을 통해 받아 오는 값
 	 * return : 입력된 filmId값을 리턴
 	 */
+	// 대출 영화
+	public List<Map<String, Object>> getBestsellerByFilm() {
+		return filmMapper.selectBestsellerByFilm();
+	}
 	
 	// 대출 영화 정보
-	public List<Map<String, Object>> getFilmListByRental() {
-		
+	public List<Map<String, Object>> getFilmListByRental() {		
 		return filmMapper.selectFilmListByRental();
 	}
 	

@@ -4,8 +4,8 @@
 	
 	<insert id="insertStaff" parameterType="com.gd.sakila.vo.Staff">
 		INSERT INTO 
-			staff(first_name, last_name, address_id, picture, email, store_id, username, password, active) 
-		VALUES( #{firstName}, #{lastName}, #{addressId}, #{picture}, #{email}, #{storeId}, #{username}, #{password}, 1)
+			staff(first_name, last_name, address_id, district}, picture, email, store_id, username, password, active) 
+		VALUES( #{firstName}, #{lastName}, #{addressId}, #{district}, #{picture}, #{email}, #{storeId}, #{username}, #{password}, 1)
 	</insert>
 	
 	<select id="selectStaffOne" parameterType="int" resultType="java.util.Map" >

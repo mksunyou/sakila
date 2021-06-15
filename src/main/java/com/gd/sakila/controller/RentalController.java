@@ -24,6 +24,14 @@ public class RentalController {
 	@Autowired RentalService rentalService;
 	@Autowired FilmService filmService;
 	
+	@GetMapping("/getNotReturnList")
+	public String getNotReturnList(Model model,
+									@RequestParam(value="storeId", required=false) int storeId) {
+		List<Map<String, Object>> notReturnList = rentalService.getNotReturnList(storeId);
+		model.addAttribute("notReturnList", notReturnList);
+		return "getNotReturnList";
+	}
+	
 	@PostMapping("/addRental")
 	public String addRental(Rental rental) {
 		return "redirect:/admin/getCustomerOne?customerId="+rental.getCustomerId();

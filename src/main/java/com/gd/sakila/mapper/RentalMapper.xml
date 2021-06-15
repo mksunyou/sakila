@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.sakila.mapper.RentalMapper">
 
+	<select id="selectNotReturnList" resultType="java.util.Map" parameterType="int">
+		SELECT i.inventory_id inventoryId, f.title title, r.customer_id customerId, r.rental_date rentalDate, i.store_id storeId
+		FROM rental r, inventory i, film f
+		WHERE return_date IS NULL 
+			AND r.inventory_id=i.inventory_id 
+			AND f.film_id=i.film_id
+			<if test="i.store_id != null">
+				i.store_id=${storeId}
+			</if>
+	</select>
+
 	<insert id="insertRental" parameterType="com.gd.sakila.vo.Rental">
 	INSERT INTO rental( 
 				inventory_id,

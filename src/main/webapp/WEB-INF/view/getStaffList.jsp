@@ -17,6 +17,7 @@
 <body>
 <div class="container">
     <h1>getStaffList</h1>
+    <a href="${pageContext.request.contextPath}/admin/addStaff">staff 추가</a>
     <table class="table table-striped">
         <thead>
             <tr>

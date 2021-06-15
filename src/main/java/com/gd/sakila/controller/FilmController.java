@@ -27,6 +27,17 @@ public class FilmController {
 	@Autowired FilmService filmService;
 	@Autowired LanguageService languageService;
 	
+	// 
+	
+	// 영화 베스트셀러
+	@GetMapping("/getSales")
+	public String getBestsellerByFilm(Model model) {
+		List<Map<String, Object>> bestsellerList = filmService.getBestsellerByFilm();
+		model.addAttribute("bestsellerList", bestsellerList);
+		log.debug("bestsellerList: "+bestsellerList);
+		return "getSales";
+	}
+	
 	// 영화 수정 액션
 	@PostMapping("modifyFilm")
 	public String modifyFilm(FilmForm filmForm) {

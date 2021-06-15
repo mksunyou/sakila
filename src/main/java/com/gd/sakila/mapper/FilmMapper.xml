@@ -14,6 +14,17 @@
 	}	
 	</select>
 	
+	<select id="selectBestsellerByFilm" resultType="java.util.Map">
+		SELECT
+			f.film_id, f.title, count(r.inventory_id) cnt
+		FROM inventory i, rental r, film f
+		WHERE i.inventory_id=r.inventory_id AND i.film_id=f.film_id
+		GROUP BY f.film_id
+		ORDER BY cnt DESC
+		limit 10
+			
+	</select>
+	
 	<select id="selectFilmListByRental" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT 
 			i.inventory_id inventoryId,

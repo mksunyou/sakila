@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class StaffController {
 	@Autowired StaffService staffService;
-	
 	@PostMapping("/addStaff")
 	public String addStaff(Staff staff) {
 		int staffId = staffService.addStaff(staff);

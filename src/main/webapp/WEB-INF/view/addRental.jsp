@@ -23,7 +23,7 @@ $(document).ready(function(){
 	// #inputInventory 추가
 		$('#addInventory').click(function(){
     	console.log('#addRentalBtn click!');
-    	$('#inputInventory').append('<div>inventory title cost</div>')
+    	$('#inputInventory').append('<div>${inventoryId} ${title} ${cost}</div>')
     });
 	
 		// #inputInventory 추가

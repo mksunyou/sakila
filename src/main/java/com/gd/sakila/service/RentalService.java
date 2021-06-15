@@ -1,6 +1,7 @@
 package com.gd.sakila.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class RentalService {
 	@Autowired RentalMapper rentalMapper;
+	// 미반납 목록
+	public List<Map<String, Object>> getNotReturnList(int storeId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("storeId", storeId);
+		List<Map<String, Object>> notReturnList = rentalMapper.selectNotReturnList(map);
+		return notReturnList;
+	}
 	
+	//대여
 	public Map<String, Object> addRental(Rental rental) {
 		
 		rentalMapper.insertRental(rental);
